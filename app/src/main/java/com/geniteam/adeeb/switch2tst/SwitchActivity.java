@@ -52,6 +52,7 @@ public class SwitchActivity extends AppCompatActivity implements View.OnTouchLis
     int stateAngleImage = 0;
     double currentAngleActionUp;
     private double mPreAngle;
+    int anglec=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,23 +167,21 @@ public class SwitchActivity extends AppCompatActivity implements View.OnTouchLis
     public boolean onTouch(final View v, MotionEvent event) {
         xc = v.getWidth() / 2;
         yc = v.getHeight() / 2;
-        Log.i("debug6", "img  x" + xc);
-        Log.i("debug6", "img center y" + yc);
+        Log.d("debug66","ontouch");
 
-        Log.i("debug5", "on touch x " + x);
-        Log.i("debug5", "touch y " + y);
-        x = event.getX();
-        y = event.getY();
-        if(lastTouchX == 0) {
-            lastTouchX = x;
-        }
-        if(lastTouchY == 0) {
-            lastTouchY = y;
-        }
+      //  lastTouchX = x;
+        // }
+        // if(lastTouchY == 0) {
+      //  lastTouchY = y;
+
+       // if(lastTouchX == 0) {
+
+        //}
 
 
 
-        setSwitchBgWithShade(currentImageNumber);
+
+       // setSwitchBgWithShade(currentImageNumber);
 
 
         switch (event.getAction()) {
@@ -191,246 +190,144 @@ public class SwitchActivity extends AppCompatActivity implements View.OnTouchLis
                 //  wheel.clearAnimation();
                 //
 
-                mCurrAngle = Math.toDegrees(Math.atan2(x - xc, yc - y));
-                mPreAngle = mCurrAngle;
-
+lastTouchX=event.getX();
+lastTouchY=event.getY();
+                double tx = event.getX() - xc, ty = event.getY() - yc;
+                double t_length = Math.sqrt(tx*tx + ty*ty);
+                double a = Math.acos(ty / t_length);
+              //  mPreAngle = mCurrAngle;
+               // mPreAngle = getAngle(event.getX(),event.getY(),xc,yc);
+                mPreAngle=  Math.toDegrees(Math.atan2(x - xc, yc - y));
 
                 break;
             }
             case MotionEvent.ACTION_MOVE:
-
-
-
-
-               lastTouchX=x;
-               lastTouchY=y;
-
-
-                x = event.getX();
+                Log.d("debug66","onmove");
+//lastTouchY=y;
+//lastTouchX=x;
+                  x = event.getX();
                 y = event.getY();
 
-                Log.d("debug","y "+y);
-                Log.d("debug","x "+x);
-                mPrevAngle = mCurrAngle;
-               // mCurrAngle = Math.toDegrees(Math.atan2(x - xc, yc - y));
+float dXL=lastTouchX-x;
+                float dYL=lastTouchY-y;
+
+            if(lastTouchX>x){
+                dXL=lastTouchX-x;
+            }else {
+                dXL=x-lastTouchX;
+
+            }
+
+                if(lastTouchY>y){
+                    dYL=lastTouchY-y;
+                }else {
+                    dYL=y-lastTouchY;
+
+                }
 
 
-                mCurrAngle = Math.toDegrees(Math.atan2(x - xc, yc - y));
-              //  Log.i("debug5","action move previous angle "+mPrevAngle);
-              //  Log.i("debug5","action move current angle "+mCurrAngle);
-                Log.d("debug16","curr angle "+mCurrAngle);
+
+              mCurrAngle = Math.toDegrees(Math.atan2(lastTouchY-y,lastTouchX-x));
+//mCurrAngle+=45;
 
 if(mCurrAngle<0){
-    runLogic1=false;
-}else {
-    runLogic1=false;
+    mCurrAngle+=360;
 }
 
-             if(mPreAngle==180&&mCurrAngle>0){
-                 runLogic2=false;
 
-                         animate(mCurrAngle, mCurrAngle, 0);
+                double tx = event.getX() - xc, ty =  yc-event.getY();
+                double t_length = Math.sqrt(tx*tx + ty*ty);
+                double a = Math.acos(ty / t_length);
+                //  mPreAngle = mCurrAngle;
+              //  mCurrAngle = Math.toDegrees(a);
+//mCurrAngle=getAngle(event.getX(),event.getY(),xc,yc);
+
+             //  Log.d("debug66", "y " + y);
+             //   Log.d("debug66", "lasty " + lastTouchY);
+              //  Log.d("debug66", "x " + x);
+               // Log.d("debug66", "lastX " + lastTouchX);
+                Log.d("debug66", "currAngle " + mCurrAngle);
+                Log.d("debug66", "lastAngle " + mPreAngle);
+                int swipeUp=0;
+                int swipeRight=0;
+                int swipeLeft=0;
+                int swipeDown=0;
+                if(mCurrAngle<0){
+                    //mCurrAngle+=180;
+                    //Log.d("debug66", "after +180 " + mCurrAngle);
+                }
+                if(x>lastTouchX){
+
+                    swipeRight++;
+                }
+
+                if(y>lastTouchY){
+
+                    swipeUp++;
+                }
+
+                if(x<lastTouchX){
+
+                    swipeLeft++;
+                }
+
+                if(y<lastTouchY){
+
+                    swipeDown++;
+                }
+
+//if(mCurrAngle>mPreAngle)
+                animate(mCurrAngle,mCurrAngle,0);
 
 
-                 Log.i("debug16","rotate img "+mCurrAngle);
-                       Log.i("debug3","current angle "+mCurrAngle);
-                    if(mCurrAngle>0&&mCurrAngle<=36){
-                        Log.d("debug12","36");
-                        currentRoundAngle=36;
-                        setSwitchBgWithShade(4);
-                        currentImageNumber=4;
 
-                    }else if(mCurrAngle>36&&mCurrAngle<=72){
-                        Log.d("debug3","72");
-                        currentRoundAngle=72;
-                        setSwitchBgWithShade(3);
-                        currentImageNumber=3;
 
-                    }else if(mCurrAngle>72&&mCurrAngle<=108){
-                        Log.d("debug3","108");
-                        currentRoundAngle=108;
-                        setSwitchBgWithShade(2);
-                        currentImageNumber=2;
+mPreAngle=mCurrAngle;
 
-                    }else if(mCurrAngle>108&&mCurrAngle<=144){
-                        Log.d("debug3","144");
-                        currentRoundAngle=144;
-                        setSwitchBgWithShade(1);
-                        currentImageNumber=1;
 
-                    }else if(mCurrAngle>144&&mCurrAngle<=180){
-                        Log.d("debug12","180");
-                        currentRoundAngle=180;
-                        setSwitchBgWithShade(0);
-                        currentImageNumber=0;
 
-                    }
-            }else {
-                 newAngle=mCurrAngle;
-                 runLogic1=false;
-Log.d("debug16"," logic 2 ");
-                 if (mCurrAngle < 0) {
-                     newAngle=mCurrAngle;
-                     newAngle = 180 + newAngle;
-                 }
-                 Log.d("debug16"," new angle  "+newAngle);
-                 if(y>=lastTouchY) {
-                     //  runLogic1=true;
+               //
 
-                     if (newAngle > mPreAngle) {
-                         mPreAngle = newAngle;
-                         if (newAngle > topThreShold) {
-                             mPreAngle = 180;
-                         }
-                     }
-                     if (mPreAngle < 180) {
-                         animate(newAngle, newAngle, 0);
 
-                         if(newAngle>0&&newAngle<=36){
-                             Log.d("debug3","36");
-                             currentRoundAngle=36;
-                             setSwitchBgWithShade(4);
-                             currentImageNumber=4;
 
-                         }else if(newAngle>36&&newAngle<=72){
-                             Log.d("debug3","72");
-                             currentRoundAngle=72;
-                             setSwitchBgWithShade(3);
-                             currentImageNumber=3;
 
-                         }else if(newAngle>72&&newAngle<=108){
-                             Log.d("debug3","108");
-                             currentRoundAngle=108;
-                             setSwitchBgWithShade(2);
-                             currentImageNumber=2;
-
-                         }else if(newAngle>108&&newAngle<=144){
-                             Log.d("debug3","144");
-                             currentRoundAngle=144;
-                             setSwitchBgWithShade(1);
-                             currentImageNumber=1;
-
-                         }else if(newAngle>144&&newAngle<=180){
-                             Log.d("debug12","180");
-                             currentRoundAngle=180;
-                             setSwitchBgWithShade(0);
-                             currentImageNumber=0;
-
-                         }
-                     }else {
-                         currentRoundAngle=-1;
-                     }
-                 }else {
-                     if (newAngle <= mPreAngle) {
-                         mPreAngle = newAngle;
-                         if (newAngle < 10) {
-                             newAngle = 0;
-                         }
-                     }
-                     if (newAngle > 0) {
-                         animate(newAngle, newAngle, 0);
-                         Log.d("debug17","angle "+newAngle);
-                         if(mCurrAngle>0&&mCurrAngle<=36){
-                             Log.d("debug17","36");
-                             currentRoundAngle=36;
-                             setSwitchBgWithShade(4);
-                             currentImageNumber=4;
-
-                         }else if(mCurrAngle>36&&mCurrAngle<=72){
-                             Log.d("debug17","72");
-                             currentRoundAngle=72;
-                             setSwitchBgWithShade(3);
-                             currentImageNumber=3;
-
-                         }else if(mCurrAngle>72&&mCurrAngle<=108){
-                             Log.d("debug17","108");
-                             currentRoundAngle=108;
-                             setSwitchBgWithShade(2);
-                             currentImageNumber=2;
-
-                         }else if(mCurrAngle>108&&mCurrAngle<=144){
-                             Log.d("debug17","144");
-                             currentRoundAngle=144;
-                             setSwitchBgWithShade(1);
-                             currentImageNumber=1;
-
-                         }else if(mCurrAngle>144&&mCurrAngle<=180){
-                             Log.d("debug17","180");
-                             currentRoundAngle=180;
-                             setSwitchBgWithShade(0);
-                             currentImageNumber=0;
-
-                         }
-                     }else {
-                         currentRoundAngle=-1;
-                     }
-
-                 }
-             }
                 break;
 
-            case MotionEvent.ACTION_UP: {
-                // mPrevAngle =mCurrAngle ;
-                newAngle=0;
-                lastTouchY = 0f;
-                lastTouchX = 0f;
-                mPreAngle =0;
-                mPrevAngle =0;
-                mCurrAngle=0;
-                currentAngleActionUp = Math.toDegrees(Math.atan2(x - xc, yc - y));
-                if (currentAngleActionUp < 0) {
-                    Log.d("debug9", "less than angle up" + currentAngleActionUp);
-                    if (currentAngleActionUp < 0) {
-                        currentAngleActionUp = currentAngleActionUp + 180;
-                        Log.d("debug9", "less than angle +180 up" + currentAngleActionUp);
-                    } else {
-                        mCurrAngle = 180;
-                    }
-                }
-                Log.d("debug4", " action up");
-                Log.i("debug5", "action up previous angle " + mPrevAngle);
-                Log.i("debug5", "action up current angle " + mCurrAngle);
-                if (currentAngleActionUp >= 0 && currentAngleActionUp <= 180) {
-                    if (currentRoundAngle == 36) {
-                        callApiWithEndpoint(1);
-                        animate(currentAngleActionUp, 0, 500);
-                        setSwitchBgWithOutShade(4);
-                        currentImageNumber = 4;
-                    } else if (currentRoundAngle == 72) {
-                        //   animate(72,72,400);
-                        animate(currentAngleActionUp, 54, 500);
-                        callApiWithEndpoint(2);
-                        setSwitchBgWithOutShade(3);
-                        currentImageNumber = 3;
-                    } else if (currentRoundAngle == 108) {
-                        // animate(108,108,400);
-                        animate(currentAngleActionUp, 90, 500);
-                        callApiWithEndpoint(3);
-                        setSwitchBgWithOutShade(2);
-                        currentImageNumber = 2;
-                    } else if (currentRoundAngle == 144) {
-                        //animate(144,144,400);
-                        animate(currentAngleActionUp, 136, 500);
-                        callApiWithEndpoint(4);
-                        currentImageNumber = 1;
-                        setSwitchBgWithOutShade(1);
-                    } else if (currentRoundAngle == 180) {
-                        animate(currentAngleActionUp, 180, 500);
-                        callApiWithEndpoint(5);
-                        currentImageNumber = 0;
-                        setSwitchBgWithOutShade(0);
-                    } else {
-                        setSwitchBgWithOutShade(currentImageNumber);
-                    }
-                } else {
-                    // imageViewSwitch.setRotation((float) mCurrAngle);
-                    // animate(mPrevAngle, mCurrAngle, 0);
-                }
-            }
+            case MotionEvent.ACTION_UP:
+
+                break;
         }
-        return true;
+            return true;
+        }
+    private Double getAngle(float touchX, float touchY,float centerX, float centerY) {
+        double angle;
+        double x2 = touchX - centerX;
+        double y2 = touchY - centerY;
+        double d1 = Math.sqrt((centerY * centerY));
+        double d2 = Math.sqrt((x2 * x2 + y2 * y2));
+        if (touchX >= centerX) {
+            angle = Math.toDegrees(Math.acos((-centerY * y2) / (d1 * d2)));
+        } else
+            angle = 360 - Math.toDegrees(Math.acos((-centerY * y2) / (d1 * d2)));
+        return angle;
     }
 
+        public void rot(MotionEvent event){
+         ImageView   iv = (ImageView) findViewById(R.id.imageViewSwitch); // img view to rotate
+            int touch_x = (int) event.getX(); // touch point x
+            int touch_y = (int) event.getY(); // touch point y
+            int[] location = new int[2];
+            iv.getLocationInWindow(location);   // get img location on screen
+
+            float angle = (float) Math.toDegrees(Math.atan2( touch_x - lastTouchX,    touch_y -   lastTouchY));
+
+            if(angle < 0){
+                angle += 360;
+            }
+
+
+            iv.setRotation(-angle);
+        }
 
     public void setSwitchBgWithOutShade(final int i) {
         new Handler().postDelayed(new Runnable() {

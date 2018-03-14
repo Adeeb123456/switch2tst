@@ -78,7 +78,7 @@
                 android:layout_centerHorizontal="false"
                 android:layout_margin="16dp"
                 android:padding="16dp"
-                android:src="@drawable/switch1with_out_shd" />
+                android:src="@drawable/sw1" />
 
 
 
